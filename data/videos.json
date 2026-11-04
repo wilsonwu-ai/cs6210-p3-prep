@@ -1,0 +1,44 @@
+[
+ {
+  "ep": "E1",
+  "title": "Episode E1",
+  "star": "S",
+  "file": "E1.mp4"
+ },
+ {
+  "ep": "E2",
+  "title": "Episode E2",
+  "star": "T",
+  "file": "E2.mp4"
+ },
+ {
+  "ep": "E3",
+  "title": "Episode E3",
+  "star": "A1",
+  "file": "E3.mp4"
+ },
+ {
+  "ep": "E4",
+  "title": "Episode E4",
+  "star": "A2",
+  "file": "E4.mp4"
+ },
+ {
+  "ep": "E5",
+  "title": "Episode E5",
+  "star": "A3",
+  "file": "E5.mp4"
+ },
+ {
+  "ep": "E6",
+  "title": "Episode E6",
+  "star": "A4",
+  "file": "E6.mp4"
+ },
+ {
+  "ep": "E7",
+  "title": "Episode E7",
+  "star": "R",
+  "file": "E7.mp4"
+ }
+]

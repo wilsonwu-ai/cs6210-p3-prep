@@ -1,0 +1,43 @@
+{
+ "title": "Why P3 matters: the pattern behind modern services and AI systems",
+ "lede": "P3 is small, but its shape (accept many requests, fan each one out to several backends at once, wait with a deadline, merge what came back, balance load) is the core loop of almost every networked system you will build, including AI applications.",
+ "sections": [
+  {
+   "title": "1. The pattern has a name: scatter-gather",
+   "body": "One request in, N requests out in parallel, one merged answer back. Search engines query many index shards per search; price-comparison and travel sites query many suppliers; microservice gateways call several services to build one page. Your store is a scatter-gather service with three suppliers.",
+   "bullets": [
+    "Latency of the whole request = the slowest backend you wait for, so you overlap calls instead of serialising them (your Phase 1 loop).",
+    "A deadline caps the slowest backend; partial results beat no results (your 3-second deadline and 'keep the OK bids' rule).",
+    "Tail latency, not average latency, is what users feel when you fan out to many backends."
+   ]
+  },
+  {
+   "title": "2. Software engineering skills it exercises",
+   "body": "These are the topics systems-design interviews probe, and P3 makes you implement each one rather than draw it.",
+   "bullets": [
+    "RPC and interface contracts: .proto files are a typed API between services (gRPC is used widely for service-to-service calls).",
+    "Event-driven I/O: a completion queue is the same idea as epoll, IOCP or an async event loop: one thread waits for many events.",
+    "Thread pools and backpressure: a fixed worker count bounds concurrency; an unbounded queue is the classic place memory grows under overload.",
+    "Load balancing: round robin is the default policy in many client-side load balancers; an atomic counter keeps it correct without a lock.",
+    "Failure handling: timeouts, partial results and 'never let one dependency hang the request' are the basics of resilient services.",
+    "Lifecycle and shutdown: draining in-flight work before closing queues is what graceful deploys depend on."
+   ]
+  },
+  {
+   "title": "3. Where the same pattern shows up in AI engineering",
+   "body": "AI applications are distributed systems with expensive, slow, sometimes failing backends. The P3 loop maps almost one-to-one:",
+   "bullets": [
+    "Model gateways and routers spread requests across several model endpoints or replicas: a load balancer like your per-vendor round robin, usually with retries and fallbacks added.",
+    "Retrieval-augmented generation (RAG) often queries several retrievers or index shards in parallel, then merges and ranks the hits before calling the model: scatter-gather.",
+    "Agents that call several tools at once need the same discipline: start the calls concurrently, set a deadline per call, and continue with the tools that answered.",
+    "Model servers expose gRPC and HTTP endpoints and keep a worker pool or batch queue in front of the accelerator; the queue-plus-workers shape is your thread pool.",
+    "Evaluation and batch inference jobs fan out thousands of model calls; bounding concurrency (a pool size) protects rate limits and cost."
+   ]
+  },
+  {
+   "title": "4. How to say it in an interview (30 seconds)",
+   "body": "\"P3 is a scatter-gather service: an async gRPC server hands each request to a bounded thread pool; the worker fans out one async call per vendor with a shared deadline, merges whatever succeeded, and replies. Backends are chosen by a lock-free per-vendor round robin. The same design is how an AI gateway routes across model replicas, or how a RAG pipeline queries several retrievers in parallel with timeouts.\"",
+   "bullets": []
+  }
+ ]
+}

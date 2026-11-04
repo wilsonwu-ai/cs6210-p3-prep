@@ -1,5 +1,12 @@
 [
  {
+  "ep": "E0",
+  "title": "Full film: the whole store, explained (10 min)",
+  "star": "Overview",
+  "blurb": "Watch first. The use-case (STAR), one request end to end, then the code in four parts: startup + round robin, async server, vendor fan-out, thread pool.",
+  "file": "E0.mp4"
+ },
+ {
   "ep": "E1",
   "title": "Episode E1",
   "star": "S",
